@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import TopBtn from './components/TopButton';
 import Navbar from './components/Navbar';
 import ListTwo from './components/list2';
+import ListThree from './components/list3';
 
 const ImgFeed = styled.div`
     position: absolute;
@@ -22,7 +23,7 @@ function App() {
       <Header />
       <Search />
       <ImgFeed>
-        <ListTwo />
+        <ListThree />
       </ImgFeed>
     </>
   );
