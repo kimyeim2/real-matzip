@@ -22,8 +22,8 @@ function App() {
       <Navbar />
       <Header />
       <Search />
-      <ImgFeed>
-        <ListThree />
+      <ImgFeed id="imgFeed">
+        <ListThree keyword="성수맛집" />
       </ImgFeed>
     </>
   );

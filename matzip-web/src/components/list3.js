@@ -1,41 +1,84 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useReducer } from 'react';
 import styled from 'styled-components';
 import axios from "axios";
+import Search from './Search';
 
-// const search = "홍대맛집";
-const BASE_URL = "http://whrbdnjs33.asuscomm.com:5432/matzip/?search=홍대맛집";
+function reducer (state, action) {
+    switch (action.type) {
+        case 'LOADING' :
+            return {
+                loading: true,
+                data: null,
+                error: null
+            };
+        case 'SUCCESS' :
+            return {
+                loading: false,
+                data: action.data,
+                error: null
+            };
+        case 'ERROR' :
+            return {
+                loading: false,
+                data: null,
+                error: action.error
+            };
+        default:
+            throw new Error(`Unhandled action type: ${action.type}`);
+    }
+}
 
-function ListThree() {
+function ListThree(props) {
 
-    const [data, setData] = useState([]);
+    const [state, dispatch] = useReducer(reducer, {
+        loading: false,
+        data: null,
+        error: null
+    });
 
-    const api = axios.create({
-        baseURL: BASE_URL
-    })
-
-    const getFood = api.get(BASE_URL, );
-        //"matzip/", { params: { search } });
+    const fetchPosts = async () => {
+        dispatch({type: 'LOADING'});
+        try {
+            const response = await axios.get(
+                `http://whrbdnjs33.asuscomm.com:5432/matzip/?search=${props.keyword}`
+            );
+            dispatch({ type: 'SUCCESS', data:response.data});
+        } catch (e) {
+            dispatch({type: 'ERROR', error: e});
+        }
+    };
 
     useEffect(() => {
-        getFood.then((res) => {
-            setData(res.data.results);
-        })
+        fetchPosts();
     }, []);
 
+    const { loading, data: posts, error } = state;
+
+    if (loading) return <div>로딩중..</div>;
+    if (error) return <div>에러가 발생했습니다</div>;
+    if (posts && posts.length == 0) return <div>아무것도 없습니다!!</div>
+    if (!posts) return null;
     return (
         <>
-            {data.map((post) =>
+            {posts.map((post) => post.allowed ?
                 <Image>
-                    <img src={post.url} />
+                    <Item src={post.url} />
                 </Image>
+                : null
             )}
         </>
     )
 }
 
+const Item = styled.img`
+    width: 256px;
+    height: 256px;
+    object-fit: cover;
+`;
+
 const Image = styled.div`
-    width: 300px;
-    height: 300px;
+    width: 256px;
+    height: 256px;
     padding: 3px;
 `;
 
