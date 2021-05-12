@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Banner = styled.div`
-    font-size: 50px;
+    font-size: 48px;
     width: 200px;
     height: 100px;
     text-align: center;
@@ -13,7 +13,7 @@ const Banner = styled.div`
 const Header = () => {
     return (
         <Banner>
-            진짜맛집
+            진짜 맛집
         </Banner>
     );
 };

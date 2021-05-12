@@ -15,9 +15,18 @@ const Nav = styled.div`
 `;
 
 const Navbar = () => {
+
+    const refreshPage = () => {
+        window.location.reload(false);
+    }
+
     return (
         <Nav>
-            <IconButton>
+            <IconButton
+                onClick={(e) => {
+                    refreshPage();
+                }}
+                >
                 <HomeRoundedIcon />
             </IconButton>
         </Nav>
